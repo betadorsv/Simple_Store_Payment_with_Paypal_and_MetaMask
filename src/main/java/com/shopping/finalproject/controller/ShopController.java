@@ -1,5 +1,6 @@
 package com.shopping.finalproject.controller;
 
+import com.shopping.finalproject.Hash.AESHash;
 import com.shopping.finalproject.global.GlobalData;
 import com.shopping.finalproject.model.Products;
 import com.shopping.finalproject.service.CategoryService;
@@ -10,6 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+
 @Controller
 public class ShopController {
     @Autowired
@@ -18,8 +29,15 @@ public class ShopController {
     ProductsService productsService;
 
     @GetMapping({"/", "/home"})
-    public String home(Model model){
+    public String home(Model model) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
         model.addAttribute("cartCount", GlobalData.cart.size());
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        System.out.println(iv);
+        String test="be";
+        byte[] testbyet=test.getBytes();
+        System.out.println("---");
+        System.out.println(testbyet);
         return "index";
     }
     @GetMapping("/shop")

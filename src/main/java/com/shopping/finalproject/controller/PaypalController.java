@@ -20,35 +20,32 @@ import javax.servlet.http.HttpServletRequest;
 public class PaypalController {
     @Autowired
     PaypalService paypalService;
-
     public static final String SUCCESS_URL="/pay/success";
     public static final String CANCEL_URL="/pay/cancel";
 
-    @PostMapping("/pay")
+    @GetMapping("/pay")
     public String payment(HttpServletRequest request){
+        Double totalPrice=GlobalData.cart.stream().mapToDouble(Products::getPrice).sum();
         try {
+
             Payment payment = paypalService.createPayment(
-                    10.0,
+                    totalPrice,
                     "USD",
                     "paypal" ,
                     "sale",
                     "nothing",
-                    "http://localhost:8080" + CANCEL_URL,
-                    "http://localhost:8080" + SUCCESS_URL
+                    "http://localhost:8081" + CANCEL_URL,
+                    "http://localhost:8081" + SUCCESS_URL
             );
             for(Links link:payment.getLinks()){
                 if(link.getRel().equals("approval_url")){
-                    System.out.println("THANH TOAN OK");
                     return "redirect:"+link.getHref();
                 }
             }
         }
         catch (PayPalRESTException e){
             e.printStackTrace();
-            System.out.println("THANH TOAN that bai");
         }
-        System.out.println("THANH TOAN khong biet");
-
         return "redirect:/";
     }
     @GetMapping(value = CANCEL_URL)
@@ -64,6 +61,7 @@ public class PaypalController {
             Payment payment= paypalService.executePayment(paymentId, payerId);
             System.out.println(payment.toJSON());
             if(payment.getState().equals("approved")){
+                GlobalData.cart.clear();
                 return "paymentSuccess";
             }
         }

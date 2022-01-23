@@ -151,28 +151,31 @@
 <!--                        </div>-->
 
 
-                        <form method="post" th:action="@{/pay}" >
+                        <form method="post" th:action="@{/pay-wallet}" th:object="${paymentInfo}">
                             <div class="form-group">
-                                <label for="currency">Currency</label>
-                                <input type="text" name="currency" id="currency" required placeholder="Currency" class="form-control form-control-lg">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" name="cardNumber" id="cardNumber" required placeholder="card Number" class="form-control form-control-lg">
                             </div>
                             <div class="form-group">
-                                <label for="method">Payment Method</label>
-                                <input type="text" name="method" id="method" required placeholder="Payment Method" class="form-control form-control-lg">
+                                <label for="cvvNumber">CVV Number</label>
+                                <input type="text" name="cvvNumber" id="cvvNumber" required placeholder="CVV Number" class="form-control form-control-lg">
                             </div>
                             <div class="form-group">
-                                <label for="intent">Intent</label>
-                                <input type="text" class="form-control form-control-lg"  placeholder="Intent" name="intent" id="intent">
-
+                                <label for="cardHolderName">Card Holder Name</label>
+                                <input type="text" name="cardHolderName" id="cardHolderName" required placeholder="Card Holder Name" class="form-control form-control-lg">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" name="address" id="address" required placeholder="Your Address" class="form-control form-control-lg">
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <input type="text" class="form-control form-control-lg" required placeholder="Description" name="description"
                                        id="description">
                             </div>
-
-                            <input type="submit" value="Pay Now" class="btn btn-primary btn-block">
+                            <input type="submit" value="Pay with Web Wallet" class="btn btn-primary btn-block">
                         </form>
+
                     </div>
                 </div>
                 <!-- Card -->
@@ -192,7 +195,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                 Amount Payable
-                                <span>₹<span th:text="${total}"></span></span>
+                                <span>$<span th:text="${total}"></span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                                 Shipping
@@ -205,7 +208,7 @@
                                         <p class="mb-0">(including VAT)</p>
                                     </strong>
                                 </div>
-                                <span><strong>₹<span th:text="${total}"></span></strong></span>
+                                <span><strong>$<span th:text="${total}"></span></strong></span>
                             </li>
                         </ul>
 
